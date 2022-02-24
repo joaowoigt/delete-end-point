@@ -15,7 +15,7 @@ public class DB {
         return DB.clients;
     }
 
-    public Client clientDetails(UUID id) throws Exception {
+    public Client searchClient(UUID id) throws Exception {
         Optional<Client> client = DB.clients.stream().filter(it ->
                 Objects.equals(it.getId(), id)).findAny();
         if (client.isPresent()) {
@@ -30,13 +30,13 @@ public class DB {
                 .forEach(client -> {
                     client.setNome(requestClient.getNome());
                     client.setEmail(requestClient.getEmail());
-                    client.setPassword(requestClient.getSenha());
+                    client.setPassword(requestClient.getPassword());
                 });
-        return clientDetails(id);
+        return searchClient(id);
     }
 
     public void deleteClient(UUID id) throws Exception {
-        Client deleteClient = clientDetails(id);
+        Client deleteClient = searchClient(id);
         clients.remove(deleteClient);
     }
 }

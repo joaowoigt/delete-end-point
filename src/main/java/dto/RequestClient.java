@@ -12,6 +12,6 @@ import java.util.UUID;
 public class RequestClient {
     private String nome;
     private String email;
-    private String senha;
-    private String agencia;
+    private String password;
+    private String agency;
 }

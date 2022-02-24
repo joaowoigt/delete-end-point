@@ -7,8 +7,6 @@ import model.AccountType;
 import model.Client;
 import model.DB;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -56,13 +54,13 @@ public class ClientController {
             @RequestBody RequestClient requestClient,
             UriComponentsBuilder uriComponentsBuilder
     ) {
-        Account account = new Account(String.valueOf(random.nextInt()), requestClient.getAgencia(), AccountType.CONTA_CORRENTE);
+        Account account = new Account(String.valueOf(random.nextInt()), requestClient.getAgency(), AccountType.CONTA_CORRENTE);
         List<Account> accountList = new ArrayList<>();
         accountList.add(account);
         Client newClient = new Client(UUID.randomUUID(),
                 requestClient.getNome(),
                 requestClient.getEmail(),
-                requestClient.getSenha(),
+                requestClient.getPassword(),
                 accountList);
         dataBase.add(newClient);
         ResponseClient responseClient = new ResponseClient(newClient);
@@ -72,7 +70,7 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseClient> clientDetails(@PathVariable UUID id) throws Exception {
-        Client client = dataBase.clientDetails(id);
+        Client client = dataBase.searchClient(id);
         return ResponseEntity.ok(new ResponseClient(client));
     }
 
