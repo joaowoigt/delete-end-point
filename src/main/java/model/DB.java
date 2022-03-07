@@ -1,6 +1,7 @@
 package model;
 
 import dto.RequestClient;
+import dto.ResquesDeposit;
 
 import java.util.*;
 
@@ -39,4 +40,18 @@ public class DB {
         Client deleteClient = searchClient(id);
         clients.remove(deleteClient);
     }
+
+    public void deposit(UUID id, ResquesDeposit deposit) {
+        DB.clients.stream().filter(client -> Objects.equals(client.getId(), id))
+                .forEach(client -> {
+                    Optional<Account> account = client.getAccountList().stream().filter(it -> Objects.equals(it.getId(),deposit.getAccount())).findAny();
+                    if (account.isPresent()) {
+                        Double newFund = account.get().getFund() + deposit.getDeposit();
+                        account.get().setFund(newFund);
+                    }
+                });
+
+    }
+
+
 }

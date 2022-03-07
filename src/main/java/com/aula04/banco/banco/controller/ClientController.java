@@ -2,6 +2,7 @@ package com.aula04.banco.banco.controller;
 
 import dto.RequestClient;
 import dto.ResponseClient;
+import dto.ResquesDeposit;
 import model.Account;
 import model.AccountType;
 import model.Client;
@@ -54,7 +55,7 @@ public class ClientController {
             @RequestBody RequestClient requestClient,
             UriComponentsBuilder uriComponentsBuilder
     ) {
-        Account account = new Account(String.valueOf(random.nextInt()), requestClient.getAgency(), AccountType.CONTA_CORRENTE);
+        Account account = new Account(UUID.randomUUID(), String.valueOf(random.nextInt()), requestClient.getAgency(), AccountType.CONTA_CORRENTE, 0.0);
         List<Account> accountList = new ArrayList<>();
         accountList.add(account);
         Client newClient = new Client(UUID.randomUUID(),
@@ -91,4 +92,14 @@ public class ClientController {
         dataBase.deleteClient(id);
         return ResponseEntity.ok("Deletado com sucesso");
     }
+
+    @PatchMapping("/deposita")
+    public ResponseEntity deposit(
+            @RequestHeader("id") UUID id,
+            @RequestBody ResquesDeposit deposit
+    ) {
+        dataBase.deposit(id, deposit);
+        return ResponseEntity.ok().build();
+    }
+
 }
